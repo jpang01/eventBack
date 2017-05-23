@@ -22,7 +22,7 @@ function parentTask() {
     const ptEE = new EventEmitter();
 
     ptEE.on('start',        nextTask);
-    ptEE.on('subTaskDone',  processResult);
+    //ptEE.on('subTaskDone',  processResult);
     ptEE.on('resultDone',   nextTask);
     ptEE.on('allDone',      endTask);
 
@@ -38,10 +38,10 @@ function parentTask() {
                 return;
             }
             var t = tasks.shift();
-            subTask(t, ptEE, 'subTaskDone');
+            subTask(t, processResult);
     }
 
-    function processResult(v) {
+    function processResult(err, v) {
         total += v;
         console.log('current total =', total);
         ptEE.emit('resultDone');
@@ -54,7 +54,7 @@ function parentTask() {
 }
 
 
-function subTask(value, parentEE, doneEvent) {
+function subTask(value, callback) {
     var taskLimit = 4;
     var   activeTasks = 0;
     var   completedTaskCount = 0;
@@ -119,7 +119,8 @@ function subTask(value, parentEE, doneEvent) {
 
     function endSubTask() {
         console.log("Subtask %d Done! The subtotal is %d", value, sum);
-        parentEE.emit(doneEvent, sum);
+        //parentEE.emit(doneEvent, sum);
+        callback(null, sum);
     }
 
 }
