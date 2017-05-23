@@ -48,7 +48,7 @@ Function task() {
 			event.emit(‘SubTaskOneDone’, resultOne)
 		}
 	}
-
+parentEvent.emit(‘ChildDone’, …)
 	function subTaskTwo() {…}	
 	function doneFunction() {…}
 	function handleErrorFunction() {…}
@@ -70,14 +70,13 @@ Function task() {
 ```javascript
 Function parentTask() {
 
+	childTask(vars, callback);
 }
 
-Function childTask(vars, parentEvent) {
+Function childTask(vars, callback) {
 …….
 	var event = new EventEmitter();
-	event.on(‘Done’, ()=>{
-		parentEvent.emit(‘ChildDone’, …);
-	}	
+	event.on(‘Done’, callback);	// Child calls parent callback function
 ……..
 }
 ```
